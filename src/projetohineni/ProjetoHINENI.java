@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class ProjetoHINENI {
 
@@ -25,11 +26,11 @@ public class ProjetoHINENI {
     System.out.println("Erro na conexão com o banco de dados: " + e.getMessage());
 }
    
-    }
-    
-    
-    javax.swing.SwingUtilities.invokeLater(() ->  {
-        TelaEntrada TelaEntrada()= new TelaEntrada;
+    SwingUtilities.invokeLater(() -> {
         new TelaEntrada().setVisible(true);
-    });
+    });   
+    
+    
+    
+}
 }
