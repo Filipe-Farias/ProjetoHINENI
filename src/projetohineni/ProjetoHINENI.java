@@ -13,24 +13,10 @@ import javax.swing.SwingUtilities;
 public class ProjetoHINENI {
 
     public static void main(String[] args) {
-    Connection conn = null;
     
-    try {
-
-    Class.forName("com.mysql.cj.jdbc.Driver");
-
-    conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/?user=root");
-
-    System.out.println("Conexão com o banco de dados estabelecida.");
-} catch (ClassNotFoundException | SQLException e) {
-    System.out.println("Erro na conexão com o banco de dados: " + e.getMessage());
-}
-   
-    SwingUtilities.invokeLater(() -> {
         new TelaEntrada().setVisible(true);
-    });   
-    
-    
+    }
     
 }
-}
+    
+    

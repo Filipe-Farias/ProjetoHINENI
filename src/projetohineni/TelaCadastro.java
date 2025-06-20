@@ -4,10 +4,9 @@
  */
 package projetohineni;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
-import java.sql.SQLException;
-
 /**
  *
  * @author lipef
@@ -111,43 +110,35 @@ public class TelaCadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
-        // 1. Capturar os dados do formulário
-        String nome = EntradaNome.getText().trim();
-        String email = EntradaEmail.getText().trim();
-        String senha = EntradaSenha.getText().trim();
+        String nome = EntradaNome.getText();
+        String email = EntradaEmail.getText();
+        String senha = EntradaSenha.getText();
 
-        if (nome.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-            "Nome e email são obrigatórios.",
-            "Erro de validação",
-            JOptionPane.ERROR_MESSAGE);
-            return;
-    }
+        int idAnotacoes = 1;
 
-        String sql = "INSERT INTO usuarios (nome, email) VALUES (?, ?)";
-        try (Connection conn = ProjetoHINENI.getConnection();
-        PreparedStatement pst = conn.prepareStatement(sql)) {
+        try {
+            Connection conn = conexao.getConnection();
+            String sql = "INSERT INTO Usuario (nome, email, senha, idAnotacoes) VALUES (?, ?, ?, ?)";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, nome);
+            pst.setString(2, email);
+            pst.setString(3, senha);
+            pst.setInt(4, idAnotacoes);
 
-        pst.setString(1, nome);
-        pst.setString(2, email);
-        int linhas = pst.executeUpdate();
+            int resultado = pst.executeUpdate();
 
-        if (linhas > 0) {
-            TelaPrincipal tp = new TelaPrincipal();
-            tp.setVisible(true);
-            this.dispose(); 
-        } else {
-            JOptionPane.showMessageDialog(this,
-                "Erro ao cadastrar. Nenhum dado foi inserido.",
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
+            if (resultado > 0) {
+                JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
+                new TelaPrincipal().setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro: Nenhum dado foi inserido.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage(), "Erro de Banco", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this,
-            "Erro ao cadastrar:\n" + ex.getMessage(),
-            "Erro de banco",
-            JOptionPane.ERROR_MESSAGE);
-    }
+
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     /**
